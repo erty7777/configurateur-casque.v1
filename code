@@ -1,0 +1,442 @@
+{% comment %}
+MRTS BKLF — Shopify helmet configurator V1
+Section file: sections/mrts-helmet-configurator.liquid
+
+VERSION ADAPTED TO YOUR REAL WORKFLOW:
+- 1 image = 4 views in the same PNG
+- no separate front/side/back switch
+- no base layer required
+- configurable layers: hb, mid, back, front, finition
+- fixed layer always on top: caoutchouc
+- file naming convention:
+  5_hb_alcantara_noir.png
+  5_mid_alcantara_noir.png
+  5_back_alcantara_noir.png
+  5_front_alcantara_noir.png
+  5_finition_black.png
+  caoutchouc_V1.png
+
+IMPORTANT:
+- all PNGs must have same dimensions
+- transparent background required
+- perfect alignment between all images
+{% endcomment %}
+
+<section class="mrts-configurator" data-section-id="{{ section.id }}">
+  <div class="page-width">
+    <div class="mrts-configurator__grid">
+      <div class="mrts-configurator__viewer">
+        <h2 class="mrts-title">Aperçu du casque</h2>
+        <div class="mrts-preview" id="mrtsPreview-{{ section.id }}">
+          <div class="mrts-preview" id="mrtsPreview-{{ section.id }}">
+  <div id="layer-hb-{{ section.id }}" class="mrts-preview__layer" aria-label="Zone haut bas"></div>
+  <div id="layer-mid-{{ section.id }}" class="mrts-preview__layer" aria-label="Zone mid"></div>
+  <div id="layer-back-{{ section.id }}" class="mrts-preview__layer" aria-label="Zone back"></div>
+  <div id="layer-front-{{ section.id }}" class="mrts-preview__layer" aria-label="Zone front"></div>
+  <div id="layer-finition-{{ section.id }}" class="mrts-preview__layer" aria-label="Zone finition"></div>
+  <div id="layer-caoutchouc-{{ section.id }}" class="mrts-preview__layer" aria-label="Zone caoutchouc"></div>
+</div>
+        </div>
+        <p class="mrts-help">Chaque PNG contient déjà les 4 vues du casque. Le configurateur superpose simplement les calques dans le bon ordre.</p>
+      </div>
+
+      <div class="mrts-configurator__panel">
+        <div class="mrts-block">
+          <h2 class="mrts-title">Configure ton casque</h2>
+          <p class="mrts-help">V1 de test. On valide d'abord la superposition des calques, puis on ajoutera toutes les matières, couleurs, prix et options avancées.</p>
+        </div>
+
+        <div class="mrts-block">
+          <label class="mrts-label" for="mrtsVariant-{{ section.id }}">Taille</label>
+          <select id="mrtsVariant-{{ section.id }}" class="mrts-input" data-role="variant-select">
+            {% for variant in product.variants %}
+              <option value="{{ variant.id }}" data-price="{{ variant.price }}">{{ variant.title }} — {{ variant.price | money }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="mrts-block">
+          <div class="mrts-zone-grid">
+            <div class="mrts-zone-card">
+              <strong>HB</strong>
+              <label class="mrts-label">Matière</label>
+              <select class="mrts-input" data-zone="hb" data-field="material"></select>
+              <label class="mrts-label">Couleur</label>
+              <select class="mrts-input" data-zone="hb" data-field="color"></select>
+            </div>
+
+            <div class="mrts-zone-card">
+              <strong>MID</strong>
+              <label class="mrts-label">Matière</label>
+              <select class="mrts-input" data-zone="mid" data-field="material"></select>
+              <label class="mrts-label">Couleur</label>
+              <select class="mrts-input" data-zone="mid" data-field="color"></select>
+            </div>
+
+            <div class="mrts-zone-card">
+              <strong>BACK</strong>
+              <label class="mrts-label">Matière</label>
+              <select class="mrts-input" data-zone="back" data-field="material"></select>
+              <label class="mrts-label">Couleur</label>
+              <select class="mrts-input" data-zone="back" data-field="color"></select>
+            </div>
+
+            <div class="mrts-zone-card">
+              <strong>FRONT</strong>
+              <label class="mrts-label">Matière</label>
+              <select class="mrts-input" data-zone="front" data-field="material"></select>
+              <label class="mrts-label">Couleur</label>
+              <select class="mrts-input" data-zone="front" data-field="color"></select>
+            </div>
+
+            <div class="mrts-zone-card">
+              <strong>FINITION</strong>
+              <label class="mrts-label">Couleur</label>
+              <select class="mrts-input" data-zone="finition" data-field="color"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="mrts-block mrts-summary">
+          <div class="mrts-summary__row">
+            <span>Prix de base</span>
+            <strong data-role="base-price">{{ product.selected_or_first_available_variant.price | money }}</strong>
+          </div>
+          <div class="mrts-summary__row">
+            <span>Options</span>
+            <strong data-role="options-price">{{ 0 | money }}</strong>
+          </div>
+          <div class="mrts-summary__row mrts-summary__row--total">
+            <span>Total</span>
+            <strong data-role="total-price">{{ product.selected_or_first_available_variant.price | money }}</strong>
+          </div>
+        </div>
+
+        <button type="button" class="mrts-button" data-role="add-to-cart">Ajouter au panier</button>
+        <div class="mrts-status" data-role="status"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="mrtsConfig-{{ section.id }}">
+    {
+      "type": "5",
+      "extension": "png",
+      "fixedLayer": "caoutchouc_V1.png",
+      "zones": ["hb", "mid", "back", "front", "finition"],
+      "materials": {
+        "hb": ["alcantara", "3d", "luxe"],
+        "mid": ["alcantara", "3d"],
+        "back": ["alcantara", "3d"],
+        "front": ["alcantara", "3d"],
+        "finition": []
+      },
+      "colors": {
+        "hb": ["noir", "bleu", "rouge", "blanc", "vert"],
+        "mid": ["noir", "bleu", "rouge", "blanc", "vert"],
+        "back": ["noir", "bleu", "rouge", "blanc", "vert", "gris"],
+        "front": ["noir", "blanc", "gris", "bleu"],
+        "finition": ["rouge", "bleu", "vert", "black"]
+      },
+      "upcharges": {
+        "hb": {},
+        "mid": {},
+        "back": {},
+        "front": {},
+        "finition": {}
+      },
+      "defaults": {
+        "hb": {"material": "alcantara", "color": "noir"},
+        "mid": {"material": "alcantara", "color": "noir"},
+        "back": {"material": "alcantara", "color": "noir"},
+        "front": {"material": "alcantara", "color": "noir"},
+        "finition": {"color": "black"}
+      },
+      "labels": {
+        "hb": "Haut / Bas",
+        "mid": "Mid",
+        "back": "Back",
+        "front": "Front",
+        "finition": "Finition"
+      }
+    }
+  </script>
+
+  <script>
+    (() => {
+      const sectionId = {{ section.id | json }};
+      const root = document.querySelector(`[data-section-id="${sectionId}"]`);
+      if (!root) return;
+
+      const config = JSON.parse(document.getElementById(`mrtsConfig-${sectionId}`).textContent);
+      const variantSelect = root.querySelector('[data-role="variant-select"]');
+      const basePriceEl = root.querySelector('[data-role="base-price"]');
+      const optionsPriceEl = root.querySelector('[data-role="options-price"]');
+      const totalPriceEl = root.querySelector('[data-role="total-price"]');
+      const statusEl = root.querySelector('[data-role="status"]');
+
+      const state = {
+        variantId: variantSelect.value,
+        basePrice: Number(variantSelect.selectedOptions[0]?.dataset.price || 0),
+        selections: JSON.parse(JSON.stringify(config.defaults))
+      };
+
+      function money(cents) {
+        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format((cents || 0) / 100);
+      }
+
+      function assetUrl(fileName) {
+  const base = {{ '5_finition_vert.png' | asset_url | split: '5_finition_vert.png' | first | json }};
+  return base + fileName;
+      }
+
+      function layerFilename(zone) {
+        if (zone === 'finition') {
+          return `${config.type}_finition_${state.selections.finition.color}.${config.extension}`;
+        }
+        const sel = state.selections[zone];
+        return `${config.type}_${zone}_${sel.material}_${sel.color}.${config.extension}`;
+      }
+
+    function renderLayer(zone) {
+  const layer = root.querySelector(`#layer-${zone}-${sectionId}`);
+  if (!layer) return;
+  layer.style.backgroundImage = `url("${assetUrl(layerFilename(zone))}")`;
+}
+
+function renderFixedLayer() {
+  const layer = root.querySelector(`#layer-caoutchouc-${sectionId}`);
+  if (!layer) return;
+  layer.style.backgroundImage = `url("${assetUrl(config.fixedLayer)}")`;
+}
+
+function renderPreview() {
+  config.zones.forEach(renderLayer);
+  renderFixedLayer();
+}
+
+      function populateSelects() {
+        config.zones.forEach((zone) => {
+          const materialSelect = root.querySelector(`[data-zone="${zone}"][data-field="material"]`);
+          const colorSelect = root.querySelector(`[data-zone="${zone}"][data-field="color"]`);
+
+          if (materialSelect) {
+            if (!config.materials[zone] || !config.materials[zone].length) {
+              materialSelect.closest('.mrts-zone-card')?.classList.add('mrts-zone-card--single');
+              materialSelect.parentElement?.removeChild(materialSelect.previousElementSibling);
+              materialSelect.remove();
+            } else {
+              materialSelect.innerHTML = config.materials[zone].map((material) => `
+                <option value="${material}" ${state.selections[zone].material === material ? 'selected' : ''}>${material}</option>
+              `).join('');
+            }
+          }
+
+          if (colorSelect) {
+            colorSelect.innerHTML = (config.colors[zone] || []).map((color) => `
+              <option value="${color}" ${state.selections[zone].color === color ? 'selected' : ''}>${color}</option>
+            `).join('');
+          }
+        });
+      }
+
+      function bindSelects() {
+        root.querySelectorAll('[data-zone][data-field]').forEach((select) => {
+          select.addEventListener('change', (event) => {
+            const zone = event.currentTarget.dataset.zone;
+            const field = event.currentTarget.dataset.field;
+            state.selections[zone][field] = event.currentTarget.value;
+            renderPreview();
+            renderPrices();
+          });
+        });
+      }
+
+      function renderPreview() {
+        config.zones.forEach(renderLayer);
+        renderFixedLayer();
+      }
+
+      function renderPrices() {
+        let optionsTotal = 0;
+        config.zones.forEach((zone) => {
+          if (zone === 'finition') return;
+          const material = state.selections[zone].material;
+          optionsTotal += config.upcharges?.[zone]?.[material] || 0;
+        });
+        const total = state.basePrice + optionsTotal;
+        basePriceEl.textContent = money(state.basePrice);
+        optionsPriceEl.textContent = money(optionsTotal);
+        totalPriceEl.textContent = money(total);
+      }
+
+      variantSelect.addEventListener('change', () => {
+        state.variantId = variantSelect.value;
+        state.basePrice = Number(variantSelect.selectedOptions[0]?.dataset.price || 0);
+        renderPrices();
+      });
+
+      root.querySelector('[data-role="add-to-cart"]').addEventListener('click', async () => {
+        statusEl.textContent = 'Ajout au panier...';
+
+        const properties = {
+          'HB': `${state.selections.hb.material} / ${state.selections.hb.color}`,
+          'MID': `${state.selections.mid.material} / ${state.selections.mid.color}`,
+          'BACK': `${state.selections.back.material} / ${state.selections.back.color}`,
+          'FRONT': `${state.selections.front.material} / ${state.selections.front.color}`,
+          'FINITION': `${state.selections.finition.color}`,
+          'CAOUTCHOUC': 'Fixe'
+        };
+
+        const formData = new FormData();
+        formData.append('id', state.variantId);
+        formData.append('quantity', '1');
+
+        Object.entries(properties).forEach(([key, value]) => {
+          formData.append(`properties[${key}]`, value);
+        });
+
+        try {
+          const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' }
+          });
+
+          if (!response.ok) throw new Error('Erreur panier');
+          statusEl.textContent = 'Produit ajouté au panier.';
+        } catch (error) {
+          console.error(error);
+          statusEl.textContent = 'Impossible d’ajouter au panier.';
+        }
+      });
+
+      populateSelects();
+    bindSelects();
+    renderPreview();
+    renderPrices();
+})();
+  </script>
+
+  <style>
+    .mrts-configurator {
+      padding: 40px 0;
+      background: #0b0b0b;
+      color: #fff;
+    }
+    .mrts-configurator__grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .mrts-configurator__viewer,
+    .mrts-configurator__panel,
+    .mrts-block,
+    .mrts-zone-card {
+      background: #121212;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+    }
+    .mrts-configurator__viewer,
+    .mrts-configurator__panel {
+      padding: 18px;
+    }
+    .mrts-configurator__panel {
+      display: grid;
+      gap: 14px;
+    }
+    .mrts-block {
+      padding: 16px;
+    }
+    .mrts-title {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+    .mrts-help, .mrts-status {
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+    }
+    .mrts-preview {
+      position: relative;
+      width: 100%;
+      height: 700px;
+      border-radius: 18px;
+      overflow: hidden;
+      background:rgb(153, 151, 151);
+    }
+   .mrts-preview__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 85% auto;
+  pointer-events: none;
+}
+    .mrts-zone-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .mrts-zone-card {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .mrts-label {
+      display: block;
+      font-size: 13px;
+      color: rgba(255,255,255,.8);
+      margin-bottom: 6px;
+    }
+    .mrts-input {
+      width: 100%;
+      background: #0e0e0e;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .mrts-summary {
+      display: grid;
+      gap: 10px;
+    }
+    .mrts-summary__row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .mrts-summary__row--total {
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .mrts-button {
+      width: 100%;
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 20px;
+      font-weight: 700;
+      background: #e3017e;
+      color: #fff;
+      cursor: pointer;
+    }
+    @media (max-width: 990px) {
+      .mrts-configurator__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+{
+  "name": "MRTS Helmet Configurator",
+  "settings": [],
+  "presets": [
+    {
+      "name": "MRTS Helmet Configurator"
+    }
+  ]
+}
+{% endschema %}
